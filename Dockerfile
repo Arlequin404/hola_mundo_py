@@ -1,14 +1,20 @@
-# Usa una imagen base de Python
-FROM python:3.9
+# Imagen base de Python 3.12
+FROM python:3.12-slim
 
-# Crea un directorio de trabajo
+# Crea directorio de trabajo
 WORKDIR /app
 
-# Copia los archivos de la aplicación
-COPY . .
+# Copia primero el archivo de dependencias
+COPY requirements.txt .
 
 # Instala Flask
-RUN pip install flask
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Ejecuta el script
+# Copia todo lo demás
+COPY . .
+
+# Expone el puerto 5000
+EXPOSE 5000
+
+# Ejecuta la app
 CMD ["python", "app.py"]
