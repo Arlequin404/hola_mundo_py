@@ -24,7 +24,7 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
-        context: ./hola_mundo_py
-        file: ./hola_mundo_py/Dockerfile
+        context: .            # ← raíz del proyecto
+        file: ./Dockerfile    # ← también en la raíz
         push: true
         tags: alex8991/hola_mundo_py:latest
