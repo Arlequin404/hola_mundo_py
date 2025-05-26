@@ -1,11 +1,11 @@
-name: Docker CI/CD to Docker Hub
+name: Docker CI/CD to Docker Hub + Railway
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  build-and-push:
+  build-push-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,17 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
-        context: .            # ← raíz del proyecto
-        file: ./Dockerfile    # ← también en la raíz
+        context: .
+        file: ./Dockerfile
         push: true
         tags: alex8991/hola_mundo_py:latest
+
+    - name: Install Railway CLI
+      run: curl -fsSL https://railway.app/install.sh | sh
+
+    - name: Deploy to Railway
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        railway login --token $RAILWAY_TOKEN
+        railway up
